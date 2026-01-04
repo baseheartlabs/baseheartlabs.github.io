@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Objects</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 50px;
+            font-size: 2.5em;
+        }
+
+        .timeline {
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .entry {
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .entry:nth-child(odd) .content {
+            margin-left: 0;
+            margin-right: auto;
+            width: 48%;
+            text-align: right;
+            padding-right: 40px;
+        }
+
+        .entry:nth-child(even) .content {
+            margin-left: auto;
+            margin-right: 0;
+            width: 48%;
+            text-align: left;
+            padding-left: 40px;
+        }
+
+        .dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: white;
+            border: 4px solid #667eea;
+            border-radius: 50%;
+            top: 30px;
+            z-index: 1;
+        }
+
+        .content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .content h2 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+
+        .content p {
+            color: #555;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .screenshot {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .tag.cpp { background: #00599c; }
+        .tag.audio { background: #ff6b6b; }
+        .tag.web { background: #4ecdc4; }
+        .tag.python { background: #3776ab; }
+        .tag.game { background: #f9ca24; color: #333; }
+        .tag.ml { background: #ee5a6f; }
+
+        .links {
+            margin-top: 15px;
+        }
+
+        .links a {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-right: 10px;
+            transition: background 0.3s;
+        }
+
+        .links a:hover {
+            background: #764ba2;
+        }
+
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 20px;
+            }
+
+            .dot {
+                left: 20px;
+            }
+
+            .entry:nth-child(odd) .content,
+            .entry:nth-child(even) .content {
+                width: 100%;
+                margin-left: 60px;
+                text-align: left;
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Objects</h1>
+        
+        <div class="timeline">
+            <!-- Project 1 -->
+            <div class="entry">
+                <div class="dot"></div>
+                <div class="content">
+                    <h2>Audio Visualizer</h2>
+                    <p>A real-time audio visualization tool that processes audio streams and renders dynamic visual effects synchronized with music playback.</p>
+                    <img src="screenshot1.png" alt="Audio Visualizer" class="screenshot">
+                    <div class="tags">
+                        <span class="tag cpp">C++</span>
+                        <span class="tag audio">Audio Processing</span>
+                        <span class="tag audio">OpenGL</span>
+                    </div>
+                    <div class="links">
+                        <a href="https://github.com" target="_blank">GitHub Repo</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="entry">
+                <div class="dot"></div>
+                <div class="content">
+                    <h2>Web Dashboard</h2>
+                    <p>An interactive web dashboard for monitoring and analyzing data metrics with real-time updates and customizable widgets.</p>
+                    <img src="screenshot2.png" alt="Web Dashboard" class="screenshot">
+                    <div class="tags">
+                        <span class="tag web">React</span>
+                        <span class="tag web">JavaScript</span>
+                        <span class="tag web">CSS</span>
+                    </div>
+                    <div class="links">
+                        <a href="https://github.com" target="_blank">GitHub Repo</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="entry">
+                <div class="dot"></div>
+                <div class="content">
+                    <h2>Machine Learning Model</h2>
+                    <p>A neural network implementation for image classification with training pipelines and model optimization utilities.</p>
+                    <img src="screenshot3.png" alt="ML Model" class="screenshot">
+                    <div class="tags">
+                        <span class="tag python">Python</span>
+                        <span class="tag ml">TensorFlow</span>
+                        <span class="tag ml">Machine Learning</span>
+                    </div>
+                    <div class="links">
+                        <a href="https://github.com" target="_blank">GitHub Repo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

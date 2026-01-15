@@ -152,7 +152,6 @@ a:focus-visible,button:focus-visible{outline:3px solid color-mix(in srgb, var(--
         flex: 1;
     }
 
-
     .entry:nth-child(odd) .content,
     .entry:nth-child(even) .content {
         width: 100%;

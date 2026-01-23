@@ -14,6 +14,12 @@ export function initCarousel(tabName){
     const entries = Array.from(wrapper.querySelectorAll('.entry'));
     if(entries.length <= 1) return;
     
+    // Add counter
+    const counter = document.createElement('span');
+    counter.className = 'carousel-counter';
+    counter.setAttribute('aria-live', 'polite');
+    nav.insertBefore(counter, nav.querySelector('.carousel-dots'));
+    
     // Add dots
     const dotsContainer = nav.querySelector('.carousel-dots');
     entries.forEach((_, i) => {
@@ -24,15 +30,39 @@ export function initCarousel(tabName){
         dotsContainer.appendChild(dot);
     });
     
+    // Add thumbnail strip
+    const thumbnailStrip = document.createElement('div');
+    thumbnailStrip.className = 'thumbnail-strip';
+    entries.forEach((entry, i) => {
+        const img = entry.querySelector('.screenshot');
+        if (img) {
+            const thumb = document.createElement('img');
+            thumb.src = img.src;
+            thumb.alt = img.alt;
+            thumb.className = 'thumbnail' + (i === 0 ? ' active' : '');
+            thumb.onclick = () => goToSlide(i);
+            thumbnailStrip.appendChild(thumb);
+        }
+    });
+    timeline.appendChild(thumbnailStrip);
+    
     let currentIndex = 0;
     
     function goToSlide(index){
         currentIndex = index;
         wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
         
+        // Update counter
+        counter.textContent = `${currentIndex + 1} of ${entries.length}`;
+        
         // Update dots
         nav.querySelectorAll('.carousel-dot').forEach((dot, i) => {
             dot.classList.toggle('active', i === currentIndex);
+        });
+        
+        // Update thumbnails
+        thumbnailStrip.querySelectorAll('.thumbnail').forEach((thumb, i) => {
+            thumb.classList.toggle('active', i === currentIndex);
         });
         
         // Buttons are always enabled for wrap-around

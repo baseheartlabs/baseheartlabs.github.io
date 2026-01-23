@@ -10,19 +10,41 @@
     <meta property="og:image" content="images/BaseheartLabs.svg">
     <link rel="icon" href="images/BaseheartLabs.svg" type="image/svg+xml">
     <title>Baseheart Labs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <a class="skip-link" href="#main">Skip to content</a>
-    <div class="layout">
-        <nav class="sidebar" role="tablist" aria-label="Main navigation">
-            <button class="tab-button active" role="tab" aria-controls="home" aria-selected="true" data-tab="home">Home</button>
-            <button class="tab-button" role="tab" aria-controls="objects" aria-selected="false" data-tab="objects">Objects</button>
-            <button class="tab-button" role="tab" aria-controls="code" aria-selected="false" data-tab="code">Ideas</button>
-            <button class="tab-button" role="tab" aria-controls="about" aria-selected="false" data-tab="about">About Me</button>
-        </nav>
+    
+    <header class="site-header">
+        <div class="header-inner">
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">
+                <span class="plus-icon"></span>
+            </button>
+            
+            <nav class="nav-menu" id="navMenu" role="tablist" aria-label="Main navigation">
+                <button class="tab-button active" role="tab" aria-controls="home" aria-selected="true" data-tab="home">Home</button>
+                <button class="tab-button" role="tab" aria-controls="objects" aria-selected="false" data-tab="objects">Objects</button>
+                <button class="tab-button" role="tab" aria-controls="code" aria-selected="false" data-tab="code">Ideas</button>
+                <button class="tab-button" role="tab" aria-controls="about" aria-selected="false" data-tab="about">About Me</button>
+            </nav>
+            
+            <label class="dark-mode-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="toggle-track">
+                    <span class="toggle-thumb"></span>
+                </span>
+                <span class="toggle-icons">
+                    <span class="icon-sun">☀️</span>
+                    <span class="icon-moon">🌙</span>
+                </span>
+            </label>
+        </div>
+    </header>
 
-        <main id="main" class="container" role="main">
+    <main id="main" class="main-content" role="main">
         <div class="logo-container">
             <img src="images/BaseheartLabs.svg" alt="Baseheart Labs" class="logo" fetchpriority="high">
         </div>
@@ -39,7 +61,26 @@
         <div id="code" class="tab-content" role="region" aria-labelledby="code"></div>
         <div id="about" class="tab-content" role="region" aria-labelledby="about"></div>
         <div id="objects" class="tab-content" role="region" aria-labelledby="objects"></div>
-        </main>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="https://github.com/baseheartlabs" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://linkedin.com/in/mattbaseheart" target="_blank" rel="noopener">LinkedIn</a>
+                <a href="mailto:mattbaseheart@gmail.com">Email</a>
+            </div>
+            <p class="footer-copy">&copy; 2026 Baseheart Labs. All rights reserved.</p>
+            <button class="back-to-top" id="backToTop" aria-label="Back to top">
+                <span>↑</span>
+            </button>
+        </div>
+    </footer>
+
+    <div class="lightbox" id="lightbox">
+        <button class="lightbox-close" id="lightboxClose" aria-label="Close lightbox">&times;</button>
+        <img src="" alt="" class="lightbox-img" id="lightboxImg">
+        <div class="lightbox-caption" id="lightboxCaption"></div>
     </div>
 
     <script type="module">

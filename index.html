@@ -12,18 +12,20 @@
         <nav class="sidebar" aria-label="Main navigation">
             <button class="tab-button active" role="tab" aria-controls="home" aria-selected="true" onclick="showTab(event, 'home')">Home</button>
             <button class="tab-button" role="tab" aria-controls="objects" aria-selected="false" onclick="showTab(event, 'objects')">Objects</button>
-            <button class="tab-button" role="tab" aria-controls="code" aria-selected="false" onclick="showTab(event, 'code')">Code</button>
+            <button class="tab-button" role="tab" aria-controls="code" aria-selected="false" onclick="showTab(event, 'code')">Ideas</button>
             <button class="tab-button" role="tab" aria-controls="about" aria-selected="false" onclick="showTab(event, 'about')">About Me</button>
         </nav>
 
         <main id="main" class="container" role="main">
-        <h1>Baseheart Labs</h1>
+        <div class="logo-container">
+            <img src="images/BaseheartLabs.svg" alt="Baseheart Labs" class="logo">
+        </div>
         
         <div id="home" class="tab-content active">
             <h2>Welcome to the Lab</h2>
             <p>Thanks for stopping by- what are you looking for?</p>
             <div class="home-buttons">
-                <button class="home-button" onclick="showTab(event, 'code')">Code</button>
+                <button class="home-button" onclick="showTab(event, 'code')">Ideas</button>
                 <button class="home-button" onclick="showTab(event, 'objects')">Objects</button>
             </div>
         </div>

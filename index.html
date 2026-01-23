@@ -3,30 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Baseheart Labs - Portfolio of woodworking projects, coding ideas, and creative works by Matt Baseheart.">
+    <meta property="og:title" content="Baseheart Labs">
+    <meta property="og:description" content="Portfolio of woodworking projects, coding ideas, and creative works by Matt Baseheart.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="images/BaseheartLabs.svg">
+    <link rel="icon" href="images/BaseheartLabs.svg" type="image/svg+xml">
     <title>Baseheart Labs</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <a class="skip-link" href="#main" style="position:absolute;left:-9999px;top:auto;">Skip to content</a>
+    <a class="skip-link" href="#main">Skip to content</a>
     <div class="layout">
-        <nav class="sidebar" aria-label="Main navigation">
-            <button class="tab-button active" role="tab" aria-controls="home" aria-selected="true" onclick="showTab(event, 'home')">Home</button>
-            <button class="tab-button" role="tab" aria-controls="objects" aria-selected="false" onclick="showTab(event, 'objects')">Objects</button>
-            <button class="tab-button" role="tab" aria-controls="code" aria-selected="false" onclick="showTab(event, 'code')">Ideas</button>
-            <button class="tab-button" role="tab" aria-controls="about" aria-selected="false" onclick="showTab(event, 'about')">About Me</button>
+        <nav class="sidebar" role="tablist" aria-label="Main navigation">
+            <button class="tab-button active" role="tab" aria-controls="home" aria-selected="true" data-tab="home">Home</button>
+            <button class="tab-button" role="tab" aria-controls="objects" aria-selected="false" data-tab="objects">Objects</button>
+            <button class="tab-button" role="tab" aria-controls="code" aria-selected="false" data-tab="code">Ideas</button>
+            <button class="tab-button" role="tab" aria-controls="about" aria-selected="false" data-tab="about">About Me</button>
         </nav>
 
         <main id="main" class="container" role="main">
         <div class="logo-container">
-            <img src="images/BaseheartLabs.svg" alt="Baseheart Labs" class="logo">
+            <img src="images/BaseheartLabs.svg" alt="Baseheart Labs" class="logo" fetchpriority="high">
         </div>
         
         <div id="home" class="tab-content active">
             <h2>Welcome to the Lab</h2>
             <p>Thanks for stopping by- what are you looking for?</p>
             <div class="home-buttons">
-                <button class="home-button" onclick="showTab(event, 'code')">Ideas</button>
-                <button class="home-button" onclick="showTab(event, 'objects')">Objects</button>
+                <button class="home-button" data-tab="code">Ideas</button>
+                <button class="home-button" data-tab="objects">Objects</button>
             </div>
         </div>
         
@@ -36,60 +42,13 @@
         </main>
     </div>
 
-    <script>
-        function showTab(event, tabName, push=true){
-            const contents = document.querySelectorAll('.tab-content');
-            contents.forEach(c=>c.classList.remove('active'));
-
-            const buttons = document.querySelectorAll('.tab-button');
-            buttons.forEach(b=>{b.classList.remove('active');b.setAttribute('aria-selected','false')});
-
-            const target = document.getElementById(tabName);
-            if(target){target.classList.add('active')}
-            if(event && event.currentTarget){
-                event.currentTarget.classList.add('active');
-                event.currentTarget.setAttribute('aria-selected','true');
-            } else {
-                const btn = document.querySelector(`.tab-button[aria-controls="${tabName}"]`);
-                if(btn){btn.classList.add('active');btn.setAttribute('aria-selected','true')}
-            }
-            if(push) history.pushState({tab:tabName}, '', '#'+tabName);
-        }
-
-        async function loadTabContent(tabName, fileName){
-            try{
-                const res = await fetch(fileName);
-                if(!res.ok) throw new Error('Fetch failed');
-                const text = await res.text();
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(text, 'text/html');
-                const timeline = doc.querySelector('.timeline');
-                const main = doc.querySelector('.container') || doc.querySelector('main') || timeline;
-                if(main){
-                    // remove page h1 if present
-                    const html = main.innerHTML.replace(/<h1>[\s\S]*?<\/h1>/, '');
-                    document.getElementById(tabName).innerHTML = html;
-                }
-            }catch(e){
-                console.error('loadTabContent error', e);
-                document.getElementById(tabName).innerHTML = '<p style="color:#fff">Content not available.</p>';
-            }
-        }
-
-        // handle back/forward navigation
-        window.addEventListener('popstate', (ev)=>{
-            const tab = (ev.state && ev.state.tab) || location.hash.replace('#','') || 'home';
-            showTab(null, tab, false);
-        });
-
-        // initial load
-        loadTabContent('about','about.html');
-        loadTabContent('code','code.html');
-        loadTabContent('objects','objects.html');
-
-        // if URL has hash, open that tab
-        const initial = location.hash.replace('#','');
-        if(initial) setTimeout(()=>showTab(null, initial, false), 400);
+    <script type="module">
+        import { initCarousel } from './carousel.js';
+        import { showTab } from './main.js';
+        // Expose to global scope for event delegation
+        window.initCarousel = initCarousel;
+        window.showTab = showTab;
     </script>
+    <script type="module" src="main.js"></script>
 </body>
 </html>

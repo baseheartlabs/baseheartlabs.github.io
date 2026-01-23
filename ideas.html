@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Code</title>
+    <title>Ideas</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <main id="main" class="container">
-        <h1>Code</h1>
+        <h1>Ideas</h1>
 
         <div class="timeline">
+            <div class="timeline-wrapper">
             <!-- Project 1 -->
             <div class="entry">
                 <div class="content">
@@ -26,8 +27,20 @@
                     </div>
                 </div>
             </div>
-
+            </div>
+            
+            <div class="carousel-nav">
+                <button class="carousel-button prev" aria-label="Previous">‹</button>
+                <div class="carousel-dots"></div>
+                <button class="carousel-button next" aria-label="Next">›</button>
+            </div>
         </div>
     </main>
+
+    <script src="carousel.js"></script>
+    <script>
+        // Initialize on load
+        initCarousel();
+    </script>
 </body>
 </html>

@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Baseheart Labs - Portfolio of woodworking projects, coding ideas, and creative works by Matt Baseheart.">
+    <meta name="description" content="Baseheart Labs - Fine Woodworking &amp; Bespoke Goods by Matt Baseheart. Handcrafted cutting boards, pens, turned wood, and more.">
     <meta property="og:title" content="Baseheart Labs">
-    <meta property="og:description" content="Portfolio of woodworking projects, coding ideas, and creative works by Matt Baseheart.">
+    <meta property="og:description" content="Fine Woodworking &amp; Bespoke Goods by Matt Baseheart.">
     <meta property="og:type" content="website">
     <meta property="og:image" content="images/BaseheartLabs.svg">
     <link rel="icon" href="images/BaseheartLabs.svg" type="image/svg+xml">
     <title>Baseheart Labs</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -26,9 +26,13 @@
             
             <nav class="nav-menu" id="navMenu" role="tablist" aria-label="Main navigation">
                 <button class="tab-button active" role="tab" aria-controls="home" aria-selected="true" data-tab="home">Home</button>
-                <button class="tab-button" role="tab" aria-controls="objects" aria-selected="false" data-tab="objects">Objects</button>
-                <button class="tab-button" role="tab" aria-controls="code" aria-selected="false" data-tab="code">Ideas</button>
+                <button class="tab-button" role="tab" aria-controls="kitchen" aria-selected="false" data-tab="kitchen">Kitchen</button>
+                <button class="tab-button" role="tab" aria-controls="office" aria-selected="false" data-tab="office">Office</button>
+                <button class="tab-button" role="tab" aria-controls="livingroom" aria-selected="false" data-tab="livingroom">Living Room</button>
+                <button class="tab-button" role="tab" aria-controls="gameroom" aria-selected="false" data-tab="gameroom">Game Room</button>
+                <button class="tab-button" role="tab" aria-controls="software" aria-selected="false" data-tab="software">Software</button>
                 <button class="tab-button" role="tab" aria-controls="about" aria-selected="false" data-tab="about">About Me</button>
+                <a class="shop-link" href="https://www.etsy.com/shop/BaseheartLabs" target="_blank" rel="noopener"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> Shop</a>
             </nav>
             
             <label class="dark-mode-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
@@ -37,8 +41,8 @@
                     <span class="toggle-thumb"></span>
                 </span>
                 <span class="toggle-icons">
-                    <span class="icon-sun">☀️</span>
-                    <span class="icon-moon">🌙</span>
+                    <span class="icon-sun"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span>
+                    <span class="icon-moon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
                 </span>
             </label>
         </div>
@@ -50,22 +54,51 @@
         </div>
         
         <div id="home" class="tab-content active">
-            <h2>Welcome to the Lab</h2>
-            <p>Thanks for stopping by- what are you looking for?</p>
-            <div class="home-buttons">
-                <button class="home-button" data-tab="code">Ideas</button>
-                <button class="home-button" data-tab="objects">Objects</button>
+            <div class="home-welcome">
+                <h2>Welcome to the Lab</h2>
+                <p>Handcrafted woodworking &amp; bespoke goods — browse by room.</p>
+            </div>
+            <div class="home-grid">
+                <button class="home-card" data-tab="kitchen">
+                    <img src="images/WeaveCuttingBoard2.jpg" alt="Kitchen" class="home-card-image">
+                    <span class="home-card-label">Kitchen</span>
+                </button>
+                <button class="home-card" data-tab="office">
+                    <img src="images/SnakewoodPen.jpg" alt="Office" class="home-card-image">
+                    <span class="home-card-label">Office</span>
+                </button>
+                <button class="home-card" data-tab="livingroom">
+                    <img src="images/SewingBox.jpg" alt="Living Room" class="home-card-image">
+                    <span class="home-card-label">Living Room</span>
+                </button>
+                <button class="home-card" data-tab="gameroom">
+                    <img src="images/DMScreen1.jpg" alt="Game Room" class="home-card-image">
+                    <span class="home-card-label">Game Room</span>
+                </button>
+                <button class="home-card" data-tab="software">
+                    <img src="images/BaseheartLabs.svg" alt="Software" class="home-card-image" style="object-fit: contain; background: var(--bg-1);">
+                    <span class="home-card-label">Software</span>
+                </button>
+            </div>
+            <div class="home-shop-cta">
+                <a href="https://www.etsy.com/shop/BaseheartLabs" target="_blank" rel="noopener">Visit the Etsy Shop</a>
             </div>
         </div>
         
-        <div id="code" class="tab-content" role="region" aria-labelledby="code"></div>
+        <div id="kitchen" class="tab-content" role="region" aria-labelledby="kitchen"></div>
+        <div id="office" class="tab-content" role="region" aria-labelledby="office"></div>
+        <div id="livingroom" class="tab-content" role="region" aria-labelledby="livingroom"></div>
+        <div id="gameroom" class="tab-content" role="region" aria-labelledby="gameroom"></div>
+        <div id="software" class="tab-content" role="region" aria-labelledby="software"></div>
         <div id="about" class="tab-content" role="region" aria-labelledby="about"></div>
-        <div id="objects" class="tab-content" role="region" aria-labelledby="objects"></div>
     </main>
 
     <footer class="site-footer">
         <div class="footer-content">
+            <hr class="footer-divider">
+            <p class="footer-tagline">Fine Woodworking &mdash; Bespoke Goods</p>
             <div class="footer-links">
+                <a href="https://www.etsy.com/shop/BaseheartLabs" target="_blank" rel="noopener">Etsy Shop</a>
                 <a href="https://github.com/baseheartlabs" target="_blank" rel="noopener">GitHub</a>
                 <a href="https://linkedin.com/in/mattbaseheart" target="_blank" rel="noopener">LinkedIn</a>
                 <a href="mailto:mattbaseheart@gmail.com">Email</a>
@@ -79,15 +112,15 @@
 
     <div class="lightbox" id="lightbox">
         <button class="lightbox-close" id="lightboxClose" aria-label="Close lightbox">&times;</button>
+        <button class="lightbox-nav prev" id="lightboxPrev" aria-label="Previous image">‹</button>
+        <button class="lightbox-nav next" id="lightboxNext" aria-label="Next image">›</button>
         <img src="" alt="" class="lightbox-img" id="lightboxImg">
         <div class="lightbox-caption" id="lightboxCaption"></div>
+        <div class="lightbox-counter" id="lightboxCounter"></div>
     </div>
 
     <script type="module">
-        import { initCarousel } from './carousel.js';
         import { showTab } from './main.js';
-        // Expose to global scope for event delegation
-        window.initCarousel = initCarousel;
         window.showTab = showTab;
     </script>
     <script type="module" src="main.js"></script>

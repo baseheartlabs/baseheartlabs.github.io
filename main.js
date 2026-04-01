@@ -1,6 +1,4 @@
-import { initCarousel } from './carousel.js';
-
-export function showTab(event, tabName, push = true) {
+﻿export function showTab(event, tabName, push = true) {
     const contents = document.querySelectorAll('.tab-content');
     contents.forEach(c => c.classList.remove('active'));
 
@@ -14,41 +12,50 @@ export function showTab(event, tabName, push = true) {
     if (target) {
         target.classList.add('active');
     }
-    
+
     const btn = document.querySelector(`.tab-button[aria-controls="${tabName}"]`);
     if (btn) {
         btn.classList.add('active');
         btn.setAttribute('aria-selected', 'true');
     }
-    
+
     if (push) {
         history.pushState({ tab: tabName }, '', '#' + tabName);
     }
+
+    // Scroll to top when switching tabs
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+const TAB_FILE_MAP = {
+    kitchen: 'kitchen.html',
+    office: 'office.html',
+    livingroom: 'livingroom.html',
+    gameroom: 'gameroom.html',
+    software: 'software.html',
+    about: 'about.html'
+};
 
 async function loadTabContent(tabName, fileName) {
     const container = document.getElementById(tabName);
-    
-    // Show loading state
+    if (!container) return;
+
     container.innerHTML = '<div class="loading-spinner" aria-label="Loading content"><div class="spinner"></div></div>';
-    
+
     try {
         const res = await fetch(fileName);
         if (!res.ok) throw new Error('Fetch failed');
-        
+
         const text = await res.text();
         const parser = new DOMParser();
         const doc = parser.parseFromString(text, 'text/html');
         const main = doc.querySelector('.container') || doc.querySelector('main');
-        
+
         if (main) {
             const html = main.innerHTML.replace(/<h1>[\s\S]*?<\/h1>/, '');
             container.innerHTML = html;
-            
-            if (tabName === 'objects' || tabName === 'code') {
-                initCarousel(tabName);
-                initLightbox(tabName);
-            }
+            bindLightboxCards(tabName);
+            observeCards(container);
         }
     } catch (e) {
         console.error('loadTabContent error', e);
@@ -62,9 +69,9 @@ function handlePopState(ev) {
 }
 
 function initializeTabs() {
-    loadTabContent('about', 'about.html');
-    loadTabContent('code', 'ideas.html');
-    loadTabContent('objects', 'objects.html');
+    for (const [tabName, fileName] of Object.entries(TAB_FILE_MAP)) {
+        loadTabContent(tabName, fileName);
+    }
 
     const initial = location.hash.replace('#', '');
     if (initial) {
@@ -74,20 +81,18 @@ function initializeTabs() {
 
 window.addEventListener('popstate', handlePopState);
 
-// Dark mode toggle
+// Dark mode
 function initDarkMode() {
     const toggle = document.getElementById('darkModeToggle');
     if (!toggle) return;
-    
-    // Check for saved preference or system preference
+
     const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+
+    if (savedTheme === 'dark') {
         document.documentElement.setAttribute('data-theme', 'dark');
         toggle.checked = true;
     }
-    
+
     toggle.addEventListener('change', () => {
         if (toggle.checked) {
             document.documentElement.setAttribute('data-theme', 'dark');
@@ -99,12 +104,12 @@ function initDarkMode() {
     });
 }
 
-// Menu toggle (plus icon rollout)
+// Mobile menu
 function initMobileMenu() {
     const menuToggle = document.getElementById('menuToggle');
     const navMenu = document.getElementById('navMenu');
     if (!menuToggle || !navMenu) return;
-    
+
     function toggleMenu() {
         const isOpen = navMenu.classList.contains('open');
         if (isOpen) {
@@ -115,18 +120,16 @@ function initMobileMenu() {
             menuToggle.setAttribute('aria-expanded', 'true');
         }
     }
-    
+
     menuToggle.addEventListener('click', toggleMenu);
-    
-    // Close menu when pressing Escape
+
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && navMenu.classList.contains('open')) {
             navMenu.classList.remove('open');
             menuToggle.setAttribute('aria-expanded', 'false');
         }
     });
-    
-    // Close menu when a tab is clicked
+
     navMenu.addEventListener('click', (e) => {
         if (e.target.closest('.tab-button')) {
             navMenu.classList.remove('open');
@@ -135,62 +138,147 @@ function initMobileMenu() {
     });
 }
 
-// Lightbox for images
-function initLightbox(tabName) {
+// Multi-image lightbox — initialized once, cards bound per tab
+const lightboxState = { images: [], index: 0, alt: '' };
+
+function initLightboxOnce() {
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightboxImg');
     const lightboxClose = document.getElementById('lightboxClose');
     const lightboxCaption = document.getElementById('lightboxCaption');
-    
+    const lightboxCounter = document.getElementById('lightboxCounter');
+    const lightboxPrev = document.getElementById('lightboxPrev');
+    const lightboxNext = document.getElementById('lightboxNext');
+
     if (!lightbox) return;
-    
-    const container = tabName ? document.getElementById(tabName) : document;
-    const images = container.querySelectorAll('.screenshot');
-    
-    images.forEach(img => {
-        img.style.cursor = 'pointer';
-        img.onclick = () => {
-            lightbox.classList.add('active');
-            lightboxImg.src = img.src;
-            lightboxImg.alt = img.alt;
-            lightboxCaption.textContent = img.alt;
-            lightboxImg.classList.remove('zoomed');
-            document.body.style.overflow = 'hidden';
-        };
-    });
-    
-    // Toggle zoom on image click
-    lightboxImg.onclick = () => {
-        lightboxImg.classList.toggle('zoomed');
-    };
-    
-    // Close lightbox
+
+    function updateView() {
+        lightboxImg.src = lightboxState.images[lightboxState.index];
+        lightboxImg.alt = lightboxState.alt;
+        lightboxCaption.textContent = lightboxState.alt;
+
+        if (lightboxState.images.length > 1) {
+            lightboxCounter.textContent = `${lightboxState.index + 1} of ${lightboxState.images.length}`;
+            lightboxPrev.hidden = false;
+            lightboxNext.hidden = false;
+        } else {
+            lightboxCounter.textContent = '';
+            lightboxPrev.hidden = true;
+            lightboxNext.hidden = true;
+        }
+    }
+
+    function prevImage() {
+        if (lightboxState.images.length <= 1) return;
+        lightboxState.index = lightboxState.index > 0 ? lightboxState.index - 1 : lightboxState.images.length - 1;
+        lightboxImg.classList.remove('zoomed');
+        updateView();
+    }
+
+    function nextImage() {
+        if (lightboxState.images.length <= 1) return;
+        lightboxState.index = lightboxState.index < lightboxState.images.length - 1 ? lightboxState.index + 1 : 0;
+        lightboxImg.classList.remove('zoomed');
+        updateView();
+    }
+
     function closeLightbox() {
         lightbox.classList.remove('active');
         document.body.style.overflow = '';
         lightboxImg.classList.remove('zoomed');
+        lightboxState.images = [];
     }
-    
-    lightboxClose.onclick = closeLightbox;
-    
-    lightbox.onclick = (e) => {
-        if (e.target === lightbox) {
-            closeLightbox();
-        }
+
+    window._openGallery = function(images, alt, index) {
+        lightboxState.images = images;
+        lightboxState.alt = alt;
+        lightboxState.index = index;
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        lightboxImg.classList.remove('zoomed');
+        updateView();
     };
-    
+
+    lightboxImg.addEventListener('click', (e) => {
+        e.stopPropagation();
+        lightboxImg.classList.toggle('zoomed');
+    });
+
+    lightboxClose.addEventListener('click', closeLightbox);
+    lightboxPrev.addEventListener('click', (e) => { e.stopPropagation(); prevImage(); });
+    lightboxNext.addEventListener('click', (e) => { e.stopPropagation(); nextImage(); });
+
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+    });
+
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && lightbox.classList.contains('active')) {
-            closeLightbox();
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') prevImage();
+        if (e.key === 'ArrowRight') nextImage();
+    });
+
+    let touchStartX = 0;
+    lightbox.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    lightbox.addEventListener('touchend', (e) => {
+        const diff = touchStartX - e.changedTouches[0].screenX;
+        if (Math.abs(diff) > 50) {
+            if (diff > 0) nextImage();
+            else prevImage();
         }
+    }, { passive: true });
+}
+
+function bindLightboxCards(tabName) {
+    const container = tabName ? document.getElementById(tabName) : document;
+    if (!container) return;
+
+    container.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('click', () => {
+            let images = [];
+            try { images = JSON.parse(card.dataset.images || '[]'); } catch (e) { images = []; }
+            if (images.length === 0) {
+                const img = card.querySelector('.card-image');
+                if (img) images = [img.src];
+            }
+            if (images.length === 0) return;
+            const alt = card.querySelector('.card-body h3')?.textContent || '';
+            window._openGallery(images, alt, 0);
+        });
+    });
+
+    container.querySelectorAll('.screenshot').forEach(img => {
+        img.style.cursor = 'pointer';
+        img.addEventListener('click', () => window._openGallery([img.src], img.alt, 0));
     });
 }
 
-// Back to top button
+// Scroll-triggered card reveal via IntersectionObserver
+const cardObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            cardObserver.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.15 });
+
+function observeCards(container) {
+    const cards = container.querySelectorAll('.card');
+    cards.forEach((card, i) => {
+        card.style.animationDelay = `${i * 0.06}s`;
+        cardObserver.observe(card);
+    });
+}
+
+// Back to top
 function initBackToTop() {
     const backToTop = document.getElementById('backToTop');
     if (!backToTop) return;
-    
+
     window.addEventListener('scroll', () => {
         if (window.scrollY > 300) {
             backToTop.classList.add('visible');
@@ -198,25 +286,23 @@ function initBackToTop() {
             backToTop.classList.remove('visible');
         }
     });
-    
+
     backToTop.addEventListener('click', () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    initLightboxOnce();
     initializeTabs();
     initDarkMode();
     initMobileMenu();
     initBackToTop();
-    
-    // Event delegation for tab buttons
+
+    // Event delegation for tab buttons and home cards
     document.body.addEventListener('click', (e) => {
         const tabButton = e.target.closest('[data-tab]');
-        if (tabButton) {
+        if (tabButton && !tabButton.closest('.card')) {
             e.preventDefault();
             showTab(e, tabButton.dataset.tab);
         }

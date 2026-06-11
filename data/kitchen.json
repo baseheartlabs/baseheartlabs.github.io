@@ -1,0 +1,51 @@
+{
+  "title": "Kitchen",
+  "description": "Cutting boards, charcuterie boards, and kitchen essentials — handcrafted from exotic hardwoods.",
+  "items": [
+    {
+      "title": "Chainmail Weave Cutting Board",
+      "description": "An end-grain cutting board made from maple, walnut, cherry, and purpleheart.",
+      "images": ["images/WeaveCuttingBoard2.jpg", "images/WeaveCuttingBoard1.jpg"]
+    },
+    {
+      "title": "Chaos Cutting Board",
+      "description": "An end-grain cutting board made from the maple, walnut, cherry, and purpleheart scraps of the chainmail weave cutting board.",
+      "images": ["images/ChaosBoard.jpg"]
+    },
+    {
+      "title": "Basket Weave Cutting Board",
+      "description": "Cutting board made from interlocking maple and walnut sections featuring handles and a juice groove.",
+      "images": ["images/CuttingBoard2.jpg"]
+    },
+    {
+      "title": "Cherry Cutting Board",
+      "description": "Cutting board made from cherry wood featuring handles and a juice groove.",
+      "images": ["images/CuttingBoard1.jpg"]
+    },
+    {
+      "title": "Charcuterie Board",
+      "description": "A simple charcuterie board made from katalox, laser engraved with an excerpt from David Copperfield.",
+      "images": ["images/CharcuterieBoard2.jpg"]
+    },
+    {
+      "title": "Charcuterie Board",
+      "description": "A simple charcuterie board made from katalox.",
+      "images": ["images/CharcuterieBoard1.jpg"]
+    },
+    {
+      "title": "Cheese Slicer",
+      "description": "A cheese slicer board made from ambrosia maple. Laser engraved with mine and my partner's names.",
+      "images": ["images/CheeseSlicer.jpg"]
+    },
+    {
+      "title": "Salt and Pepper Mills",
+      "description": "Salt and pepper mills hand turned from purpleheart and maple, featuring adjustable CrushGrind mechanisms.",
+      "images": ["images/SaltPepperMills.jpg"]
+    },
+    {
+      "title": "Tiny Bowls",
+      "description": "Small bowls, handturned from figured maple.",
+      "images": ["images/MiniBowls.jpg"]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "title": "Game Room",
+  "description": "Tabletop gaming accessories and collectibles.",
+  "items": [
+    {
+      "title": "Game Master Screen",
+      "description": "Foldable GM Screen made from various zebrawoods featuring a dice tower, gold accents, and built in magnets to hold papers.",
+      "images": ["images/DMScreen1.jpg"]
+    },
+    {
+      "title": "Nintendo Switch Controller Holder",
+      "description": "A holder for Nintendo Switch controllers, designed to look like slime and hold four controllers.",
+      "images": ["images/SwitchControllerHolder.jpg"]
+    },
+    {
+      "title": "Legend of Zelda: Wind Waker Mini",
+      "description": "Resin printed and hand painted King of Red Lions Mini from my favorite game.",
+      "images": ["images/MiniPainting3.jpg", "images/MiniPainting1.jpg", "images/MiniPainting2.jpg", "images/MiniPainting4.jpg"]
+    }
+  ]
+}

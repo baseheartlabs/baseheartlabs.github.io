@@ -1,0 +1,26 @@
+{
+  "title": "Office",
+  "description": "Handcrafted pens and frames — functional art for your workspace.",
+  "items": [
+    {
+      "title": "Snakewood Pen",
+      "description": "Snakewood twist pen featuring gold accents.",
+      "images": ["images/SnakewoodPen.jpg"]
+    },
+    {
+      "title": "Pens",
+      "description": "Twist pens made from bocote, olivewood, and purpleheart.",
+      "images": ["images/PenBatch2.jpg"]
+    },
+    {
+      "title": "More Pens!",
+      "description": "A click pen made from bloodwood and gel pen made from snakewood.",
+      "images": ["images/PenBatch1.jpg"]
+    },
+    {
+      "title": "Frames",
+      "description": "A variety of picture frames made from walnut and maple.",
+      "images": ["images/FrameBatch1.jpg"]
+    }
+  ]
+}

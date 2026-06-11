@@ -1,4 +1,6 @@
-﻿export function showTab(event, tabName, push = true) {
+﻿const loadedTabs = new Set(['home']);
+
+export function showTab(event, tabName, push = true) {
     const contents = document.querySelectorAll('.tab-content');
     contents.forEach(c => c.classList.remove('active'));
 
@@ -19,6 +21,12 @@
         btn.setAttribute('aria-selected', 'true');
     }
 
+    // Lazy-load tab content on first visit
+    if (!loadedTabs.has(tabName)) {
+        loadedTabs.add(tabName);
+        loadTabContent(tabName);
+    }
+
     if (push) {
         history.pushState({ tab: tabName }, '', '#' + tabName);
     }
@@ -27,36 +35,76 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-const TAB_FILE_MAP = {
-    kitchen: 'kitchen.html',
-    office: 'office.html',
-    livingroom: 'livingroom.html',
-    gameroom: 'gameroom.html',
-    software: 'software.html',
-    about: 'about.html'
+const TAB_DATA_MAP = {
+    kitchen: 'data/kitchen.json',
+    office: 'data/office.json',
+    livingroom: 'data/livingroom.json',
+    gameroom: 'data/gameroom.json',
+    software: 'data/software.json'
 };
 
-async function loadTabContent(tabName, fileName) {
+// About page is still loaded as HTML since it has unique structure
+const ABOUT_FILE = 'about.html';
+
+const escapeMap = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+function escapeHtml(str) {
+    return str.replace(/[&<>"']/g, c => escapeMap[c]);
+}
+
+function renderCards(data) {
+    let html = '';
+    html += `<div class="category-header"><h2>${escapeHtml(data.title)}</h2><p>${escapeHtml(data.description)}</p></div>`;
+
+    if (!data.items || data.items.length === 0) {
+        html += '<div class="under-construction"><p>🚧 This page is under construction. Check back soon! 🚧</p></div>';
+        return html;
+    }
+
+    html += '<div class="card-grid">';
+    data.items.forEach((item, i) => {
+        const imagesAttr = escapeHtml(JSON.stringify(item.images));
+        const firstImage = item.images[0] || '';
+        const loading = i === 0 ? 'eager' : 'lazy';
+        html += `<div class="card" data-images="${imagesAttr}">`;
+        html += `<img src="${escapeHtml(firstImage)}" alt="${escapeHtml(item.title)}" class="card-image" loading="${loading}">`;
+        html += `<div class="card-body"><h3>${escapeHtml(item.title)}</h3><p>${escapeHtml(item.description)}</p></div>`;
+        html += `</div>`;
+    });
+    html += '</div>';
+    return html;
+}
+
+async function loadTabContent(tabName) {
     const container = document.getElementById(tabName);
     if (!container) return;
 
     container.innerHTML = '<div class="loading-spinner" aria-label="Loading content"><div class="spinner"></div></div>';
 
     try {
-        const res = await fetch(fileName);
-        if (!res.ok) throw new Error('Fetch failed');
-
-        const text = await res.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(text, 'text/html');
-        const main = doc.querySelector('.container') || doc.querySelector('main');
-
-        if (main) {
-            const html = main.innerHTML.replace(/<h1>[\s\S]*?<\/h1>/, '');
-            container.innerHTML = html;
-            bindLightboxCards(tabName);
-            observeCards(container);
+        // About page uses HTML directly
+        if (tabName === 'about') {
+            const res = await fetch(ABOUT_FILE);
+            if (!res.ok) throw new Error('Fetch failed');
+            const text = await res.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(text, 'text/html');
+            const main = doc.querySelector('.container') || doc.querySelector('main');
+            if (main) {
+                container.innerHTML = main.innerHTML;
+            }
+            return;
         }
+
+        // All other tabs load from JSON
+        const jsonFile = TAB_DATA_MAP[tabName];
+        if (!jsonFile) return;
+
+        const res = await fetch(jsonFile);
+        if (!res.ok) throw new Error('Fetch failed');
+        const data = await res.json();
+        container.innerHTML = renderCards(data);
+        bindLightboxCards(tabName);
+        observeCards(container);
     } catch (e) {
         console.error('loadTabContent error', e);
         container.innerHTML = '<p style="color:#6c757d">Content not available.</p>';
@@ -69,13 +117,9 @@ function handlePopState(ev) {
 }
 
 function initializeTabs() {
-    for (const [tabName, fileName] of Object.entries(TAB_FILE_MAP)) {
-        loadTabContent(tabName, fileName);
-    }
-
     const initial = location.hash.replace('#', '');
-    if (initial) {
-        setTimeout(() => showTab(null, initial, false), 400);
+    if (initial && initial !== 'home') {
+        showTab(null, initial, false);
     }
 }
 
@@ -140,6 +184,7 @@ function initMobileMenu() {
 
 // Multi-image lightbox — initialized once, cards bound per tab
 const lightboxState = { images: [], index: 0, alt: '' };
+let openGallery = null;
 
 function initLightboxOnce() {
     const lightbox = document.getElementById('lightbox');
@@ -189,7 +234,7 @@ function initLightboxOnce() {
         lightboxState.images = [];
     }
 
-    window._openGallery = function(images, alt, index) {
+    openGallery = function(images, alt, index) {
         lightboxState.images = images;
         lightboxState.alt = alt;
         lightboxState.index = index;
@@ -246,13 +291,13 @@ function bindLightboxCards(tabName) {
             }
             if (images.length === 0) return;
             const alt = card.querySelector('.card-body h3')?.textContent || '';
-            window._openGallery(images, alt, 0);
+            openGallery(images, alt, 0);
         });
     });
 
     container.querySelectorAll('.screenshot').forEach(img => {
         img.style.cursor = 'pointer';
-        img.addEventListener('click', () => window._openGallery([img.src], img.alt, 0));
+        img.addEventListener('click', () => openGallery([img.src], img.alt, 0));
     });
 }
 
@@ -279,13 +324,15 @@ function initBackToTop() {
     const backToTop = document.getElementById('backToTop');
     if (!backToTop) return;
 
+    let ticking = false;
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 300) {
-            backToTop.classList.add('visible');
-        } else {
-            backToTop.classList.remove('visible');
-        }
-    });
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+            backToTop.classList.toggle('visible', window.scrollY > 300);
+            ticking = false;
+        });
+    }, { passive: true });
 
     backToTop.addEventListener('click', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });

@@ -76,7 +76,7 @@
                     <span class="home-card-label">Game Room</span>
                 </button>
                 <button class="home-card" data-tab="software">
-                    <img src="images/BaseheartLabs.svg" alt="Software" class="home-card-image" style="object-fit: contain; background: var(--bg-1);">
+                    <img src="images/BaseheartLabs.svg" alt="Software" class="home-card-image home-card-image--contain">
                     <span class="home-card-label">Software</span>
                 </button>
             </div>
@@ -85,12 +85,12 @@
             </div>
         </div>
         
-        <div id="kitchen" class="tab-content" role="region" aria-labelledby="kitchen"></div>
-        <div id="office" class="tab-content" role="region" aria-labelledby="office"></div>
-        <div id="livingroom" class="tab-content" role="region" aria-labelledby="livingroom"></div>
-        <div id="gameroom" class="tab-content" role="region" aria-labelledby="gameroom"></div>
-        <div id="software" class="tab-content" role="region" aria-labelledby="software"></div>
-        <div id="about" class="tab-content" role="region" aria-labelledby="about"></div>
+        <div id="kitchen" class="tab-content" role="region" aria-label="Kitchen"></div>
+        <div id="office" class="tab-content" role="region" aria-label="Office"></div>
+        <div id="livingroom" class="tab-content" role="region" aria-label="Living Room"></div>
+        <div id="gameroom" class="tab-content" role="region" aria-label="Game Room"></div>
+        <div id="software" class="tab-content" role="region" aria-label="Software"></div>
+        <div id="about" class="tab-content" role="region" aria-label="About"></div>
     </main>
 
     <footer class="site-footer">
@@ -119,10 +119,6 @@
         <div class="lightbox-counter" id="lightboxCounter"></div>
     </div>
 
-    <script type="module">
-        import { showTab } from './main.js';
-        window.showTab = showTab;
-    </script>
     <script type="module" src="main.js"></script>
 </body>
 </html>

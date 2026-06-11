@@ -277,6 +277,7 @@ a:focus-visible,button:focus-visible{outline:3px solid color-mix(in srgb, var(--
 .home-card:nth-child(5) { animation-delay: 0.32s; }
 .home-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.2); }
 .home-card-image { width: 100%; height: 220px; object-fit: cover; display: block; transition: transform 0.4s var(--ease-smooth); }
+.home-card-image--contain { object-fit: contain; background: var(--bg-1); }
 .home-card:hover .home-card-image { transform: scale(1.05); }
 .home-card::after {
     content: ''; position: absolute; bottom: 0; left: 0; right: 0; top: 0;

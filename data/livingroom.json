@@ -1,0 +1,41 @@
+{
+  "title": "Living Room",
+  "description": "Decorative pieces and elegant accents for your home.",
+  "items": [
+    {
+      "title": "Cantilever Sewing Box",
+      "description": "Fold-out sewing box made from zebrawood and ambrosia maple.",
+      "images": ["images/SewingBox.jpg"]
+    },
+    {
+      "title": "Padauk Wine Stopper",
+      "description": "Handturned wine stopper made from padauk wood.",
+      "images": ["images/WineStopper.jpg"]
+    },
+    {
+      "title": "Wine Glass Wine Stopper",
+      "description": "Handturned wine stopper made to look like a wine glass.",
+      "images": ["images/WineGlassStopper1.JPG", "images/WineGlassStopper2.JPG"]
+    },
+    {
+      "title": "Wine Stoppers",
+      "description": "A pair of wine stoppers, hand turned from ebony and wenge.",
+      "images": ["images/WineStopperPair.jpg"]
+    },
+    {
+      "title": "Padauk Shelves",
+      "description": "Floating shelves made from padauk wood.",
+      "images": ["images/PadaukShelves1.jpg"]
+    },
+    {
+      "title": "Planter",
+      "description": "A handcrafted wooden planter.",
+      "images": ["images/Planter.jpg"]
+    },
+    {
+      "title": "Sand Garden",
+      "description": "A miniature zen sand garden.",
+      "images": ["images/SandGarden.jpg"]
+    }
+  ]
+}
